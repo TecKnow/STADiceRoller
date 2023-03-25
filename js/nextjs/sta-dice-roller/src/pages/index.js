@@ -2,56 +2,95 @@ import Head from "next/head";
 import Image from "next/image";
 import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
+import { Fragment, useState, useEffect } from "react";
+import { BarChart } from "chartist";
+import "chartist/dist/index.css";
+import { getSuccessFrequencyTable } from "@/stats";
 
 const inter = Inter({ subsets: ["latin"] });
 
-const pool_stats = (
-  attribute,
-  discipline,
-  applicable_focus = false,
-  num_dice = 2
-) => {
-  const dc = attribute + discipline;
+function ChartArea() {
+  const [attribute, setAttribute] = useState("7");
+  const [discipline, setDiscipline] = useState("2");
+  const [focus, setFocus] = useState(false);
+  const [numDice, setNumDice] = useState("2");
 
-  // The faces of a d20
-  const d20 = Array(20)
-    .fill(0)
-    .map((x, i) => i + 1);
-
-  // Accepts any number of array-like objects and produces their cartesian product
-  const cartesian = (...a) =>
-    a.reduce((a, b) => a.flatMap((d) => b.map((e) => [d, e].flat())));
-
-  // The set of all possible rolls (combinations of dice) in the pool
-  const possible_rolls = cartesian(...Array(num_dice).fill(d20));
-
-  // An array, for each position i, there are a_i ways to get i successes
-  const successes_table = Array(2 * num_dice + 1).fill(0);
-  Array.prototype.forEach.call(possible_rolls, (dice) => {
-    let successes = 0;
-    Array.prototype.forEach.call(dice, (die) => {
-      if (die <= dc) {
-        successes += 1;
-      }
-      if (die == 1 || (applicable_focus && die <= discipline)) {
-        successes += 1;
-      }
-    });
-    successes_table[successes] += 1;
-  });
-
-  // An array, for each position i, a_i is the proportion of outcomes giving a successes
-  const normalized_table = Array.prototype.map.call(
-    successes_table,
-    (x) => x / possible_rolls.length
+  return (
+    <Fragment>
+      <Chart
+        attribute={attribute}
+        discipline={discipline}
+        focus={focus}
+        num_dice={numDice}
+      ></Chart>
+      <label>
+        Attribute:{" "}
+        <input
+          name="attribute"
+          type="number"
+          min="7"
+          max="12"
+          value={attribute}
+          onChange={(e) => setAttribute(e.target.value)}
+        />
+      </label>
+      <label>
+        Discipline:{" "}
+        <input
+          name="discipline"
+          type="number"
+          min="1"
+          max="5"
+          value={discipline}
+          onChange={(e) => setDiscipline(e.target.value)}
+        />
+      </label>
+      <label>
+        Focus:{" "}
+        <input
+          name="focus"
+          type="checkbox"
+          checked={focus}
+          onChange={(e) => setFocus(e.target.checked)}
+        />
+      </label>
+      <label>
+        Dice:{" "}
+        <input
+          name="dice"
+          type="number"
+          min="2"
+          max="5"
+          value={numDice}
+          onChange={(e) => setNumDice(e.target.value)}
+        />
+      </label>
+    </Fragment>
   );
-  return normalized_table;
-};
+}
+
+function Chart({ attribute, discipline, focus, num_dice = 2 }) {
+  useEffect(() => {
+    const frequencyTable = getSuccessFrequencyTable(Number(attribute), Number(discipline), Boolean(focus), Number(num_dice));
+    new BarChart(
+      "#chart",
+      {
+        labels: Array.from(frequencyTable.keys()),
+        series: Array.from(frequencyTable.values()),
+      },
+      {
+        distributeSeries: true,
+      }
+    );
+  }, [attribute, discipline, focus, num_dice]);
+  return (
+    <Fragment>
+      <div id="chart"></div>
+    </Fragment>
+  );
+}
 
 export default function Home() {
-  console.log(pool_stats(5, 7, false, 2));
-  console.log(pool_stats(5,7, true, 2))
-  console.log(pool_stats(5, 7, false, 5))
   return (
     <>
       <Head>
@@ -60,10 +99,10 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={styles.main}>
+      <main>
         <h1>Star Trek Adventures</h1>
         <h2>Dice Probability Distributions</h2>
-        <div>Let&apos;s roll some dice!</div>
+        <ChartArea />
       </main>
     </>
   );
