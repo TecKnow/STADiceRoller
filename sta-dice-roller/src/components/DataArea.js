@@ -1,20 +1,32 @@
 import { useState, Fragment } from "react";
-import PoolSuccessBarChart from "./PoolSuccessBarChart";
+import ExactSuccessBarChart from "./ExactSuccessBarChart";
 import InputArea from "./InputArea";
+import { createSuccessFunction } from "@/stats";
+import CumulativeSuccessLineChart from "./CumulativeSuccessLineChart";
 
 export default function DataArea({successes, complications}) {
     const [attribute, setAttribute] = useState("7");
     const [discipline, setDiscipline] = useState("1");
     const [focus, setFocus] = useState(false);
     const [numDice, setNumDice] = useState("2");
+    
+    const getSuccessTable = createSuccessFunction(successes);
   
     return (
       <Fragment>
-        <PoolSuccessBarChart
+        <ExactSuccessBarChart
           attribute={attribute}
           discipline={discipline}
           focus={focus}
           numDice={numDice}
+          getSuccesses={getSuccessTable}
+        />
+        <CumulativeSuccessLineChart
+                  attribute={attribute}
+                  discipline={discipline}
+                  focus={focus}
+                  numDice={numDice}
+                  getSuccesses={getSuccessTable}
         />
         <InputArea 
         attribute={attribute}

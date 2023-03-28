@@ -1,3 +1,39 @@
+export const createSuccessFunction =
+  (successes) =>
+  ({ numDice, focus, attribute, discipline }) => {
+    if (focus) {
+      return successes[Number(numDice)][Boolean(focus)][Number(attribute)][
+        Number(discipline)
+      ];
+    } else {
+      return successes[numDice][focus][attribute + discipline];
+    }
+  };
+
+export const normalizeArray = (inputArray) => {
+  const arraySum = Array.prototype.reduce.call(
+    inputArray,
+    (accumulator, currentValue) => accumulator + currentValue,
+    0
+  );
+  const normalizedArray = Array.prototype.map.call(
+    inputArray,
+    (currentElement) => currentElement / arraySum
+  );
+  return normalizedArray;
+};
+
+export const cumulativeSumArray = (inputArray) => {
+  const reversedArray = Array.from(inputArray).reverse();
+  let currentSum = 0;
+  const reversedCumulativeSum = reversedArray.map(
+    (element) => (currentSum += element)
+  );
+  return reversedCumulativeSum.reverse()
+};
+
+// Functions from when the js app did math, soon to be deprecated
+
 // Accepts any number of array-like objects and produces their cartesian product
 const getCartesianProduct = (...a) =>
   a.reduce((a, b) => a.flatMap((d) => b.map((e) => [d, e].flat())));

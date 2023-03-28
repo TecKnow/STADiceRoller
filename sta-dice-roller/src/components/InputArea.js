@@ -12,6 +12,7 @@ export default function InputArea({
 }) {
   return (
     <Fragment>
+      <h3>Parameters</h3>
       <label>
         Attribute:{" "}
         <input
