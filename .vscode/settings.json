@@ -1,5 +1,5 @@
 {
     "eslint.workingDirectories": [
-        "js/nextjs/sta-dice-roller"
+        "sta-dice-roller"
     ]
 }
