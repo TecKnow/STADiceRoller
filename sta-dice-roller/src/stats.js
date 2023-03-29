@@ -6,7 +6,7 @@ export const createSuccessFunction =
         Number(discipline)
       ];
     } else {
-      return successes[numDice][focus][attribute + discipline];
+      return successes[Number(numDice)][Boolean(focus)][Number(attribute) + Number(discipline)];
     }
   };
 
