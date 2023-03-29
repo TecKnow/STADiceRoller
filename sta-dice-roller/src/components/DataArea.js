@@ -3,6 +3,7 @@ import ExactSuccessBarChart from "./ExactSuccessBarChart";
 import InputArea from "./InputArea";
 import CumulativeSuccessLineChart from "./CumulativeSuccessLineChart";
 import ExactSuccessTable from "./ExactSuccessTable";
+import CumulativeSuccessTable from "./CumulativeSuccessTable";
 
 export default function DataArea({ successes, complications }) {
   const [attribute, setAttribute] = useState("7");
@@ -55,6 +56,16 @@ export default function DataArea({ successes, complications }) {
         normalize={normalize}
       />
       <CumulativeSuccessLineChart
+        attribute={attribute}
+        discipline={discipline}
+        focus={focus}
+        numDice={numDice}
+        successes={successes}
+        complications={complications}
+        complicationsRange={complicationsRange}
+        normalize={normalize}
+      />
+      <CumulativeSuccessTable
         attribute={attribute}
         discipline={discipline}
         focus={focus}
