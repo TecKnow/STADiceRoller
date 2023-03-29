@@ -11,6 +11,12 @@ export default function InputArea({
   setNumDice,
   normalize,
   setNormalize,
+  attributeMin,
+  attributeMax,
+  disciplineMin,
+  disciplineMax,
+  numDiceMin,
+  numDiceMax,
 }) {
   return (
     <Fragment>
@@ -20,10 +26,18 @@ export default function InputArea({
         <input
           name="attribute"
           type="number"
-          min="7"
-          max="12"
+          min={attributeMin}
+          max={attributeMax}
           value={attribute}
-          onChange={(e) => setAttribute(e.target.value)}
+          onChange={(e) => {
+            const newNumber = Number(e.target.value);
+            if (
+              newNumber >= Number(attributeMin) &&
+              newNumber <= Number(attributeMax)
+            ) {
+              return setAttribute(newNumber);
+            }
+          }}
         />
       </label>
       <label>
@@ -31,10 +45,18 @@ export default function InputArea({
         <input
           name="discipline"
           type="number"
-          min="1"
-          max="5"
+          min={disciplineMin}
+          max={disciplineMax}
           value={discipline}
-          onChange={(e) => setDiscipline(e.target.value)}
+          onChange={(e) => {
+            const newNumber = Number(e.target.value);
+            if (
+              newNumber >= Number(disciplineMin) &&
+              newNumber <= Number(disciplineMax)
+            ) {
+              return setDiscipline(newNumber);
+            }
+          }}
         />
       </label>
       <label>
@@ -51,10 +73,18 @@ export default function InputArea({
         <input
           name="dice"
           type="number"
-          min="2"
-          max="5"
+          min={numDiceMin}
+          max={numDiceMax}
           value={numDice}
-          onChange={(e) => setNumDice(e.target.value)}
+          onChange={(e) => {
+            const newNumber = Number(e.target.value);
+            if (
+              newNumber >= Number(numDiceMin) &&
+              newNumber <= Number(numDiceMax)
+            ) {
+              return setNumDice(newNumber);
+            }
+          }}
         />
       </label>
       <label>
