@@ -1,8 +1,8 @@
 import Head from "next/head";
 import { Fragment } from "react";
 import DataArea from "@/components/DataArea";
-import loadStaticDataFromFile from "@/lib/load-static-data"; 
-import {createComplicationsObject, createSuccessesObject} from "@/lib/static-data-objects";
+import loadStaticDataFromFile from "@/util/load-static-data"; 
+import {createComplicationsObject, createSuccessesObject} from "@/util/static-data-objects";
 
 export default function Home({ successesJSONObj, complicationsJSONObj }) {
   const successes = createSuccessesObject(successesJSONObj);
