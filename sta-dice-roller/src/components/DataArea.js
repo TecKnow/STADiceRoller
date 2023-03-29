@@ -17,11 +17,17 @@ export default function DataArea({ successes, complications }) {
       <InputArea
         attribute={attribute}
         setAttribute={setAttribute}
+        attributeMin ={7}
+        attributeMax ={12}
         discipline={discipline}
         setDiscipline={setDiscipline}
+        disciplineMin = {1}
+        disciplineMax = {5}
         focus={focus}
         setFocus={setFocus}
         numDice={numDice}
+        numDiceMin = {1}
+        numDiceMax = {5}
         setNumDice={setNumDice}
         normalize={normalize}
         setNormalize={setNormalize}
