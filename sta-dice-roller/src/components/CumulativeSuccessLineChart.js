@@ -2,29 +2,25 @@ import { Fragment, useEffect } from "react";
 import { LineChart } from "chartist";
 import "chartist/dist/index.css";
 
-import { normalizeArray, cumulativeSumArray } from "@/stats";
 
-
-export default function CumulativeSuccessLineChart({ attribute, discipline, focus=false, numDice = 2, getSuccesses}) {
+export default function CumulativeSuccessLineChart({ attribute, discipline, focus=false, numDice = 2, successes, normalize=true}) {
     useEffect(() => {
-      const frequencyTable = getSuccesses(
+      const cumulativeTable = successes.cumulativeTable(
         {attribute: Number(attribute),
         discipline: Number(discipline),
         focus: Boolean(focus),
-        numDice: Number(numDice)}
+        numDice: Number(numDice),
+      normalize: Boolean(normalize)}
       );
       new LineChart(
         "#linechart",
         {
-          labels: Array.from(frequencyTable.keys()),
-          series: [cumulativeSumArray(normalizeArray(Array.from(frequencyTable.values())))],
+          labels: Array.from(cumulativeTable.keys()),
+          series: [Array.from(cumulativeTable.values())],
         },
-        {
-          low: 0,
-          high: 1
-        }
+        {}
       );
-    }, [attribute, discipline, focus, numDice, getSuccesses]);
+    }, [attribute, discipline, focus, numDice, successes, normalize]);
     return (
       <Fragment>
         <h3>Cumulative Probability</h3>

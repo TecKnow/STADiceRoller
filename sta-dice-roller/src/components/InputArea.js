@@ -9,6 +9,8 @@ export default function InputArea({
   setFocus,
   numDice,
   setNumDice,
+  normalize,
+  setNormalize,
 }) {
   return (
     <Fragment>
@@ -53,6 +55,15 @@ export default function InputArea({
           max="5"
           value={numDice}
           onChange={(e) => setNumDice(e.target.value)}
+        />
+      </label>
+      <label>
+        normalize:{" "}
+        <input
+          name="normalize"
+          type="checkbox"
+          checked={normalize}
+          onChange={(e) => setNormalize(e.target.checked)}
         />
       </label>
     </Fragment>

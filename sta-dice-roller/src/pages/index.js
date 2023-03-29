@@ -1,10 +1,12 @@
 import Head from "next/head";
 import { Fragment } from "react";
-import fs from "fs";
-import path from "path";
 import DataArea from "@/components/DataArea";
+import loadStaticDataFromFile from "@/lib/load-static-data"; 
+import {createComplicationsObject, createSuccessesObject} from "@/lib/static-data-objects";
 
-export default function Home({ successes, complications }) {
+export default function Home({ successesJSONObj, complicationsJSONObj }) {
+  const successes = createSuccessesObject(successesJSONObj);
+  const complications = createComplicationsObject(complicationsJSONObj);
   return (
     <Fragment>
       <Head>
@@ -23,19 +25,5 @@ export default function Home({ successes, complications }) {
 }
 
 export const getStaticProps = async () => {
-  const staticDirectoryPath = path.join(process.cwd(), "static-data");
-
-  const successPath = path.join(staticDirectoryPath, "successes.json");
-  const complicationsPath = path.join(
-    staticDirectoryPath,
-    "complications.json"
-  );
-
-  const successFileContents = fs.readFileSync(successPath, "utf8");
-  const complicationsFileContents = fs.readFileSync(complicationsPath, "utf8");
-
-  const successes = JSON.parse(successFileContents);
-  const complications = JSON.parse(complicationsFileContents);
-
-  return { props: { successes, complications } };
+  return { props: { ...await loadStaticDataFromFile() } };
 };

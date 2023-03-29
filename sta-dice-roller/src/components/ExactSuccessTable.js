@@ -1,13 +1,14 @@
-import { Fragment } from "react";
+
 
 export default function ExactSuccessTable({
   attribute,
   discipline,
   focus = false,
   numDice = 2,
-  getSuccesses,
+  successes,
+  normalize=true
 }) {
-  const successList = getSuccesses({ attribute, discipline, focus, numDice });
+  const successList = successes.frequencyTable({ attribute, discipline, focus, numDice, normalize });
   const rows = Array.prototype.map.call(successList, (item, idx) => (
     <tr key={`${idx}_${item}`}>
       <td>{idx}</td>
