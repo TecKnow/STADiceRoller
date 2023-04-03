@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+import FlexibleNumericInput from "./DeferredNumericInput";
 
 export default function InputArea({
   attribute,
@@ -27,40 +28,22 @@ export default function InputArea({
       <h3>Parameters</h3>
       <label>
         Attribute:{" "}
-        <input
+        <FlexibleNumericInput
           name="attribute"
-          type="number"
           min={attributeMin}
           max={attributeMax}
           value={attribute}
-          onChange={(e) => {
-            const newNumber = Number(e.target.value);
-            if (
-              newNumber >= Number(attributeMin) &&
-              newNumber <= Number(attributeMax)
-            ) {
-              return setAttribute(newNumber);
-            }
-          }}
+          setValue={setAttribute}
         />
       </label>
       <label>
         Discipline:{" "}
-        <input
+        <FlexibleNumericInput
           name="discipline"
-          type="number"
           min={disciplineMin}
           max={disciplineMax}
           value={discipline}
-          onChange={(e) => {
-            const newNumber = Number(e.target.value);
-            if (
-              newNumber >= Number(disciplineMin) &&
-              newNumber <= Number(disciplineMax)
-            ) {
-              return setDiscipline(newNumber);
-            }
-          }}
+          setValue={setDiscipline}
         />
       </label>
       <label>
@@ -74,40 +57,23 @@ export default function InputArea({
       </label>
       <label>
         Dice:{" "}
-        <input
+        <FlexibleNumericInput
           name="dice"
           type="number"
           min={numDiceMin}
           max={numDiceMax}
           value={numDice}
-          onChange={(e) => {
-            const newNumber = Number(e.target.value);
-            if (
-              newNumber >= Number(numDiceMin) &&
-              newNumber <= Number(numDiceMax)
-            ) {
-              return setNumDice(newNumber);
-            }
-          }}
+          setValue={setNumDice}
         />
       </label>
       <label>
         Complications Range:{" "}
-        <input
+        <FlexibleNumericInput
           name="complications-range"
-          type="number"
           min={complicationsRangeMin}
           max={complicationsRangeMax}
           value={complicationsRange}
-          onChange={(e) => {
-            const newNumber = Number(e.target.value);
-            if (
-              newNumber >= Number(complicationsRangeMin) &&
-              newNumber <= Number(complicationsRangeMax)
-            ) {
-              return setComplicationsRange(newNumber);
-            }
-          }}
+          setValue={setComplicationsRange}
         />
       </label>
       <label>
