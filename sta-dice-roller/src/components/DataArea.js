@@ -2,8 +2,6 @@ import { useState, Fragment } from "react";
 import ExactSuccessBarChart from "./ExactSuccessBarChart";
 import InputArea from "./InputArea";
 import CumulativeSuccessLineChart from "./CumulativeSuccessLineChart";
-import ExactSuccessTable from "./ExactSuccessTable";
-import CumulativeSuccessTable from "./CumulativeSuccessTable";
 import CombinedTable from "./CombinedTable";
 
 export default function DataArea({ successes, complications }) {
