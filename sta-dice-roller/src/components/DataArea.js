@@ -33,6 +33,8 @@ export default function DataArea({ successes, complications }) {
         setNormalize={setNormalize}
         complicationsRange={complicationsRange}
         setComplicationsRange={setComplicationsRange}
+        complicationsRangeMin={1}
+        complicationsRangeMax={5}
       />
       <ExactSuccessBarChart
         attribute={attribute}

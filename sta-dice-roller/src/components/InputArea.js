@@ -17,6 +17,10 @@ export default function InputArea({
   disciplineMax,
   numDiceMin,
   numDiceMax,
+  complicationsRange,
+  complicationsRangeMin,
+  complicationsRangeMax,
+  setComplicationsRange
 }) {
   return (
     <Fragment>
@@ -83,6 +87,25 @@ export default function InputArea({
               newNumber <= Number(numDiceMax)
             ) {
               return setNumDice(newNumber);
+            }
+          }}
+        />
+      </label>
+      <label>
+        Complications Range:{" "}
+        <input
+          name="complications-range"
+          type="number"
+          min={complicationsRangeMin}
+          max={complicationsRangeMax}
+          value={complicationsRange}
+          onChange={(e) => {
+            const newNumber = Number(e.target.value);
+            if (
+              newNumber >= Number(complicationsRangeMin) &&
+              newNumber <= Number(complicationsRangeMax)
+            ) {
+              return setComplicationsRange(newNumber);
             }
           }}
         />

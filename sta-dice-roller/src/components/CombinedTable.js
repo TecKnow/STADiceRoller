@@ -56,8 +56,8 @@ export default function CombinedTable({
             <th scope="col">Count</th>
             <th scope="col">Successes</th>
             <th scope="col">&ge;Successes</th>
-            <th scope="col">Failures</th>
-            <th scope="col">&le;Failures</th>
+            <th scope="col">Complications</th>
+            <th scope="col">&le;Complications</th>
           </tr>
         </thead>
         <tbody>{rows}</tbody>
