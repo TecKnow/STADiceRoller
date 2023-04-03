@@ -5,12 +5,14 @@ export function createSuccessesObject(successesJSONObj) {
     attribute,
     discipline,
     normalize = false,
+    atLeast = true,
   }) => ({
     numDice: Number(numDice),
     focus: Boolean(focus),
     attribute: Number(attribute),
     discipline: Number(discipline),
     normalize: Boolean(normalize),
+    atLeast: Boolean(atLeast)
   });
 
   const frequencyTable = ({
@@ -33,13 +35,14 @@ export function createSuccessesObject(successesJSONObj) {
     return normalize ? normalizeArray(freqs) : freqs;
   };
 
-  const cumulativeTable = ({ numDice, focus, attribute, discipline, normalize=true }) => {
+  const cumulativeTable = ({ numDice, focus, attribute, discipline, normalize=true, atLeast = true }) => {
     ({ numDice, focus, attribute, discipline } = _castArguments({
       numDice,
       focus,
       attribute,
       discipline,
       normalize,
+      atLeast
     }));
     const freqs = frequencyTable({
       numDice,
@@ -48,21 +51,23 @@ export function createSuccessesObject(successesJSONObj) {
       discipline,
       normalize,
     });
-    const cumFreqs = cumulativeSumArray(freqs);
+    const cumFreqs = cumulativeSumArray(freqs, atLeast);
     return cumFreqs;
   };
   return { frequencyTable, cumulativeTable };
 }
 
-export function createComplicationsObject(complications) {
+export function createComplicationsObject(complicationsJSONObj) {
   const _castArguments = ({
     numDice = 2,
     complicationsRange = 1,
     normalize = false,
+    atLeast = false,
   }) => ({
     numDice: Number(numDice),
     complicationsRange: Number(complicationsRange),
     normalize: Boolean(normalize),
+    atLeast: Boolean(atLeast),
   });
 
   const frequencyTable = ({
@@ -83,14 +88,17 @@ export function createComplicationsObject(complications) {
     numDice = 2,
     complicationsRange = 1,
     normalize = false,
+    atLeast = false,
   }) => {
     ({ numDice, complicationsRange, normalize } = _castArguments({
       numDice,
       complicationsRange,
       normalize,
+      atLeast
     }));
     const freqs = frequencyTable({ numDice, complicationsRange, normalize });
-    return normalizeArray(freqs);
+    const cumulativeFreqs = cumulativeSumArray(freqs, atLeast);
+    return cumulativeFreqs;
   };
 
   return {frequencyTable, cumulativeTable}
@@ -109,11 +117,11 @@ export const normalizeArray = (inputArray) => {
   return normalizedArray;
 };
 
-export const cumulativeSumArray = (inputArray) => {
-  const reversedArray = Array.from(inputArray).reverse();
+export const cumulativeSumArray = (inputArray, reverse = true) => {
+  const arrayToSum = reverse? Array.from(inputArray).reverse() : inputArray;
   let currentSum = 0;
-  const reversedCumulativeSum = reversedArray.map(
+  const resultArray = arrayToSum.map(
     (element) => (currentSum += element)
   );
-  return reversedCumulativeSum.reverse();
+  return reverse? resultArray.reverse() : resultArray;
 };
