@@ -43,7 +43,7 @@ function _crateSuccessDie({ attribute, discipline, focus = false }) {
   return [zeroSuccesses, oneSuccess, twoSuccesses];
 }
 
-export function frequencyTable({
+export function successesFrequencyTable({
   numDice = 2,
   focus = false,
   attribute,
@@ -59,8 +59,25 @@ export function frequencyTable({
   }));
   const successDie = _crateSuccessDie({ attribute, discipline, focus });
   const dicePool = Array(numDice).fill(successDie);
-  const res = calculateDicePoolFrequencyTable(...dicePool).filter(
-    (item) => item > 0
-  );
+  const res = calculateDicePoolFrequencyTable(...dicePool);
+  while (res.at(-1) == 0) {
+    res.pop();
+  }
+  return res;
+}
+
+export function complicationsFrequencyTable({
+  numDice = 2,
+  complicationsRange = 1,
+  normalize=false,
+}) {
+  numDice = Number(numDice);
+  complicationsRange = Number(complicationsRange);
+  const complicationsDie = [20 - complicationsRange, complicationsRange];
+  const dicePool = Array(numDice).fill(complicationsDie);
+  const res = calculateDicePoolFrequencyTable(...dicePool);
+  while (res.at(-1) == 0) {
+    res.pop();
+  }
   return res;
 }

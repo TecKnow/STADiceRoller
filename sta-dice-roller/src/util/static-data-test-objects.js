@@ -57,3 +57,14 @@ export function flattenSucessesJSONObj(successesJSONObj){
           });
           return successTestArgs;
 }
+
+export function FlattenComplicationsJSONObj(complicationsJSONObj){
+  const complicationsTestArgs = Array();
+  Object.keys(complicationsJSONObj).forEach((numDice)=>{
+    Object.keys(complicationsJSONObj[numDice]).forEach((complicationsRange)=>{
+      const res = complicationsJSONObj[numDice][complicationsRange]
+      complicationsTestArgs.push([numDice, complicationsRange, res]);
+    });
+  });
+  return complicationsTestArgs;
+}
