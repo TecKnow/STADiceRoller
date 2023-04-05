@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 
-export default async function loadStaticDataFromFile() {
+export default function loadStaticDataFromFile() {
   const staticDirectoryPath = path.join(process.cwd(), "static-data");
 
   const successPath = path.join(staticDirectoryPath, "successes.json");
