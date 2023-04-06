@@ -4,7 +4,7 @@ import InputArea from "./InputArea";
 import CumulativeSuccessLineChart from "./CumulativeSuccessLineChart";
 import CombinedTable from "./CombinedTable";
 
-export default function DataArea({ successes, complications }) {
+export default function DataArea() {
   const [attribute, setAttribute] = useState("7");
   const [discipline, setDiscipline] = useState("1");
   const [focus, setFocus] = useState(false);
@@ -41,8 +41,6 @@ export default function DataArea({ successes, complications }) {
         discipline={discipline}
         focus={focus}
         numDice={numDice}
-        successes={successes}
-        complications={complications}
         complicationsRange={complicationsRange}
         normalize={normalize}
       />
@@ -51,8 +49,6 @@ export default function DataArea({ successes, complications }) {
         discipline={discipline}
         focus={focus}
         numDice={numDice}
-        successes={successes}
-        complications={complications}
         complicationsRange={complicationsRange}
         normalize={normalize}
       />
@@ -61,8 +57,6 @@ export default function DataArea({ successes, complications }) {
               discipline={discipline}
               focus={focus}
               numDice={numDice}
-              successes={successes}
-              complications={complications}
               complicationsRange={complicationsRange}
               normalize={normalize}/>
     </Fragment>

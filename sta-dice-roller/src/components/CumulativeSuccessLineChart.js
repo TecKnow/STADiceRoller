@@ -2,18 +2,18 @@ import { Fragment, useEffect } from "react";
 import { LineChart } from "chartist";
 import "chartist/dist/index.css";
 
+import { successesCumulativeTable, complicationsCumulativeTable } from "@/util/combinatorics";
+
 export default function CumulativeSuccessLineChart({
   attribute,
   discipline,
   focus = false,
   numDice = 2,
-  successes,
-  complications,
   normalize = true,
   complicationsRange = 1,
 }) {
   useEffect(() => {
-    const cumulativeSuccessTable = successes.cumulativeTable({
+    const cumulativeSuccesses = successesCumulativeTable({
       attribute: Number(attribute),
       discipline: Number(discipline),
       focus: Boolean(focus),
@@ -21,7 +21,7 @@ export default function CumulativeSuccessLineChart({
       normalize: Boolean(normalize),
     });
     
-    const cumulativeComplicationsTable = complications.cumulativeTable({
+    const cumulativeComplications = complicationsCumulativeTable({
       numDice: Number(numDice), 
       complicationsRange: Number(complicationsRange),
       normalize: Boolean(normalize)})
@@ -30,10 +30,10 @@ export default function CumulativeSuccessLineChart({
     new LineChart(
       "#linechart",
       {
-        labels: Array.from(cumulativeSuccessTable.keys()),
+        labels: Array.from(cumulativeSuccesses.keys()),
         series: [
-          Array.from(cumulativeSuccessTable.values()), 
-          Array.from(cumulativeComplicationsTable.values()).map((element) =>1 * element)]
+          Array.from(cumulativeSuccesses.values()), 
+          Array.from(cumulativeComplications.values()).map((element) =>1 * element)]
       },
     );
   }, [
@@ -41,8 +41,6 @@ export default function CumulativeSuccessLineChart({
     discipline,
     focus,
     numDice,
-    successes,
-    complications,
     normalize,
     complicationsRange,
   ]);

@@ -15,7 +15,7 @@ export function calculateDicePoolFrequencyTable(...dice) {
   return results;
 }
 
-const _castArguments = ({
+const castArguments = ({
   numDice = 2,
   focus = false,
   attribute,
@@ -31,7 +31,7 @@ const _castArguments = ({
   atLeast: Boolean(atLeast),
 });
 
-function _crateSuccessDie({ attribute, discipline, focus = false }) {
+function createSuccessDie({ attribute, discipline, focus = false }) {
   attribute = Number(attribute);
   discipline = Number(discipline);
   focus = Boolean(focus);
@@ -50,26 +50,29 @@ export function successesFrequencyTable({
   discipline,
   normalize = false,
 }) {
-  ({ numDice, focus, attribute, discipline, normalize } = _castArguments({
+  ({ numDice, focus, attribute, discipline, normalize } = castArguments({
     numDice,
     focus,
     attribute,
     discipline,
     normalize,
   }));
-  const successDie = _crateSuccessDie({ attribute, discipline, focus });
+  const successDie = createSuccessDie({ attribute, discipline, focus });
   const dicePool = Array(numDice).fill(successDie);
   const res = calculateDicePoolFrequencyTable(...dicePool);
+  
+  // This only applies in the unusual circumstance where a character has an
+  // applicable focus but 0 discipline, meaning they can't score two successes.
   while (res.at(-1) == 0) {
     res.pop();
   }
-  return res;
+  return normalize ? normalizeArray(res) : res;
 }
 
 export function complicationsFrequencyTable({
   numDice = 2,
   complicationsRange = 1,
-  normalize=false,
+  normalize = false,
 }) {
   numDice = Number(numDice);
   complicationsRange = Number(complicationsRange);
@@ -79,5 +82,70 @@ export function complicationsFrequencyTable({
   while (res.at(-1) == 0) {
     res.pop();
   }
-  return res;
+  return normalize ? normalizeArray(res) : res;
+}
+
+export function successesCumulativeTable(
+  {numDice = 2,
+  focus = false,
+  attribute,
+  discipline,
+  normalize = false,
+  atLeast = true}
+) {
+  ({ numDice, focus, attribute, discipline, normalize, atLeast } =
+    castArguments({
+      numDice,
+      focus,
+      attribute,
+      discipline,
+      normalize,
+      atLeast,
+    }));
+  const exact = successesFrequencyTable({
+    numDice,
+    focus,
+    attribute,
+    discipline,
+    normalize,
+  });
+  const proportion = cumulativeSumArray(exact, atLeast);
+  return proportion;
+}
+
+export function complicationsCumulativeTable({
+  numDice = 2,
+  complicationsRange = 1,
+  atLeast = false,
+  normalize= false
+}) {
+  [numDice, complicationsRange, atLeast, normalize] = [
+    Number(numDice),
+    Number(complicationsRange),
+    Boolean(atLeast),
+    Boolean(normalize)
+  ];
+  const exact = complicationsFrequencyTable({numDice, complicationsRange, normalize});
+  const cumulative = cumulativeSumArray(exact, atLeast);
+  return cumulative;
+}
+
+function normalizeArray(inputArray) {
+  const arraySum = Array.prototype.reduce.call(
+    inputArray,
+    (accumulator, currentValue) => accumulator + currentValue,
+    0
+  );
+  const normalizedArray = Array.prototype.map.call(
+    inputArray,
+    (currentElement) => currentElement / arraySum
+  );
+  return normalizedArray;
+}
+
+function cumulativeSumArray(inputArray, reverse = true) {
+  const arrayToSum = reverse ? Array.from(inputArray).reverse() : inputArray;
+  let currentSum = 0;
+  const resultArray = arrayToSum.map((element) => (currentSum += element));
+  return reverse ? resultArray.reverse() : resultArray;
 }

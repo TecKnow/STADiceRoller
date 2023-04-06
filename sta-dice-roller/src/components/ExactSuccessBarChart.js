@@ -2,18 +2,18 @@ import { Fragment, useEffect } from "react";
 import { BarChart } from "chartist";
 import "chartist/dist/index.css";
 
+import { successesFrequencyTable, complicationsFrequencyTable } from "@/util/combinatorics";
+
 export default function ExactSuccessBarChart({
   attribute,
   discipline,
   focus = false,
   numDice = 2,
   normalize = true,
-  complications,
   complicationsRange = 1,
-  successes,
 }) {
   useEffect(() => {
-    const successFrequencyTable = successes.frequencyTable({
+    const exactSuccesses = successesFrequencyTable({
       attribute: Number(attribute),
       discipline: Number(discipline),
       focus: Boolean(focus),
@@ -21,21 +21,21 @@ export default function ExactSuccessBarChart({
       normalize: Boolean(normalize),
     });
 
-    const complicationsFrequencyTable = complications.frequencyTable({
+    const exactComplications = complicationsFrequencyTable({
       numDice: Number(numDice), 
       complicationsRange: Number(complicationsRange),
       normalize: Boolean(normalize)})
     new BarChart(
       "#barchart",
       {
-        labels: Array.from(successFrequencyTable.keys()),
-        series: [Array.from(successFrequencyTable.values()), Array.from(complicationsFrequencyTable.values()).map((element)=>1*element)],
+        labels: Array.from(exactSuccesses.keys()),
+        series: [Array.from(exactSuccesses.values()), Array.from(exactComplications.values()).map((element)=>1*element)],
       },
       {
         distributeSeries: undefined,
       }
     );
-  }, [attribute, discipline, focus, numDice, successes, normalize, complications, complicationsRange]);
+  }, [attribute, discipline, focus, numDice, normalize, complicationsRange]);
   return (
     <Fragment>
       <h3>Exact Successes</h3>
