@@ -1,12 +1,8 @@
 import Head from "next/head";
 import { Fragment } from "react";
 import DataArea from "@/components/DataArea";
-import loadStaticDataFromFile from "@/util/load-static-data"; 
-import {createComplicationsObject, createSuccessesObject} from "@/util/static-data-objects";
 
-export default function Home({ successesJSONObj, complicationsJSONObj }) {
-  const successes = createSuccessesObject(successesJSONObj);
-  const complications = createComplicationsObject(complicationsJSONObj);
+export default function Home() {
   return (
     <Fragment>
       <Head>
@@ -18,12 +14,8 @@ export default function Home({ successesJSONObj, complicationsJSONObj }) {
       <main>
         <h1>Star Trek Adventures</h1>
         <h2>Dice Probability Distributions</h2>
-        <DataArea successes={successes} complications={complications} />
+        <DataArea />
       </main>
     </Fragment>
   );
 }
-
-export const getStaticProps = async () => {
-  return { props: { ...await loadStaticDataFromFile() } };
-};

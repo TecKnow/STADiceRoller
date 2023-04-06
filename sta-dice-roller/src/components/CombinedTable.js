@@ -1,15 +1,16 @@
+import { successesFrequencyTable, successesCumulativeTable,
+complicationsFrequencyTable, complicationsCumulativeTable } from "@/util/combinatorics";
+
 export default function CombinedTable({
     attribute,
     discipline,
     focus = false,
     numDice = 2,
-    successes,
-    complications,
     complicationsRange,
     normalize = true,
   }) {
   
-    const exactSuccessList = successes.frequencyTable({
+    const exactSuccessList = successesFrequencyTable({
       attribute,
       discipline,
       focus,
@@ -17,15 +18,15 @@ export default function CombinedTable({
       normalize,
     });
   
-    const exactComplicationsList = complications.frequencyTable({
+    const exactComplicationsList = complicationsFrequencyTable({
       numDice,
       complicationsRange,
       normalize,
     });
 
-    const cumulativeSuccessList = successes.cumulativeTable({ attribute, discipline, focus, numDice, normalize});
+    const cumulativeSuccessList = successesCumulativeTable({ attribute, discipline, focus, numDice, normalize});
   
-    const cumulativeComplicationsList = complications.cumulativeTable({
+    const cumulativeComplicationsList = complicationsCumulativeTable({
       numDice,
       complicationsRange,
       normalize,
