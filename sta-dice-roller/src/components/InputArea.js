@@ -1,5 +1,6 @@
 import { Fragment } from "react";
 import FlexibleNumericInput from "./DeferredNumericInput";
+import styles from "../styles/InputArea.module.css"
 
 export default function InputArea({
   attribute,
@@ -26,6 +27,8 @@ export default function InputArea({
   return (
     <Fragment>
       <h3>Parameters</h3>
+      <div className={styles.inputflex}>
+      <div>
       <label>
         Attribute:{" "}
         <FlexibleNumericInput
@@ -35,7 +38,8 @@ export default function InputArea({
           value={attribute}
           setValue={setAttribute}
         />
-      </label>
+      </label></div>
+      <div>
       <label>
         Discipline:{" "}
         <FlexibleNumericInput
@@ -46,6 +50,8 @@ export default function InputArea({
           setValue={setDiscipline}
         />
       </label>
+      </div>
+      <div>
       <label>
         Focus:{" "}
         <input
@@ -55,6 +61,8 @@ export default function InputArea({
           onChange={(e) => setFocus(e.target.checked)}
         />
       </label>
+      </div>
+      <div>
       <label>
         Dice:{" "}
         <FlexibleNumericInput
@@ -65,7 +73,7 @@ export default function InputArea({
           value={numDice}
           setValue={setNumDice}
         />
-      </label>
+      </label></div><div>
       <label>
         Complications Range:{" "}
         <FlexibleNumericInput
@@ -76,6 +84,7 @@ export default function InputArea({
           setValue={setComplicationsRange}
         />
       </label>
+      </div><div>
       <label>
         normalize:{" "}
         <input
@@ -84,7 +93,8 @@ export default function InputArea({
           checked={normalize}
           onChange={(e) => setNormalize(e.target.checked)}
         />
-      </label>
+      </label></div>
+      </div>
     </Fragment>
   );
 }
