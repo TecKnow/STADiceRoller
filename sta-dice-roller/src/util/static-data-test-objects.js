@@ -58,7 +58,7 @@ export function flattenSucessesJSONObj(successesJSONObj){
           return successTestArgs;
 }
 
-export function FlattenComplicationsJSONObj(complicationsJSONObj){
+export function flattenComplicationsJSONObj(complicationsJSONObj){
   const complicationsTestArgs = Array();
   Object.keys(complicationsJSONObj).forEach((numDice)=>{
     Object.keys(complicationsJSONObj[numDice]).forEach((complicationsRange)=>{
