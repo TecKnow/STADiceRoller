@@ -132,36 +132,44 @@ describe("Test STA dice pool calculator", () => {
     const { successesJSONObj, complicationsJSONObj } = loadStaticDataFromFile();
     describe("Test against success data", () => {
       const successTestArgs = flattenSucessesJSONObj(successesJSONObj);
-      test.each(successTestArgs)("%#, %o, %o, %o, %o %o", (...args) => {
-        const [numDice, focus, ...rest] = args;
-        if (focus) {
-          const [attribute, discipline, ref] = rest;
-          const res = successesFrequencyTable({
-            numDice,
-            focus,
-            discipline,
-            attribute,
-            normalize: false,
-          });
-          expect(res).toEqual(ref);
-        } else {
-          const [targetNumber, ref] = rest;
-          const res = successesFrequencyTable({
-            numDice,
-            focus,
-            discipline: 0,
-            attribute: targetNumber,
-            normalize: false,
-          });
-          expect(res).toEqual(ref);
-        }
+      const successFocusTestArgs = successTestArgs.filter((v) => v[1]);
+      const successNoFocusTestArgs = successTestArgs.filter((v) => !v[1]);
+      describe("With focus", () => {
+        test.each(successFocusTestArgs)(
+          "Dice: %i, Focus: %o, Attribute: %i, Discipline: %i",
+          (numDice, focus, attribute, discipline, ref) => {
+            const res = successesFrequencyTable({
+              numDice,
+              focus,
+              discipline,
+              attribute,
+              normalize: false,
+            });
+            expect(res).toEqual(ref);
+          }
+        );
+      });
+      describe("Without focus", () => {
+        test.each(successNoFocusTestArgs)(
+          "Dice: %i, Focus: %o, Target: %i",
+          (numDice, focus, targetNumber, ref) => {
+            const res = successesFrequencyTable({
+              numDice,
+              focus,
+              discipline: 0,
+              attribute: targetNumber,
+              normalize: false,
+            });
+            expect(res).toEqual(ref);
+          }
+        );
       });
     });
     describe("Test against complications data", () => {
       const complicationsTestArgs =
         flattenComplicationsJSONObj(complicationsJSONObj);
       test.each(complicationsTestArgs)(
-        "%i, %i, %o",
+        "Dice: %i, Range: %i",
         (numDice, complicationsRange, ref) => {
           const res = complicationsFrequencyTable({
             numDice,
