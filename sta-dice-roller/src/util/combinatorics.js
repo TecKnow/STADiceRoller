@@ -15,6 +15,30 @@ export function calculateDicePoolFrequencyTable(...dice) {
   return results;
 }
 
+export function calculateAssistDicePoolFrequencyTable(leaderFrequencyTable, ...assistDice){
+  const dice = Array.prototype.map.call(Array.from(assistDice), (die) => Array.from(die));
+  const results = dice.reduce((accumulator, die) => {
+    const nextArrayLength = accumulator.length - 1 + (die.length - 1) + 1;
+    const nextArray = Array(nextArrayLength).fill(0);
+    die.forEach((dieCount, dieIdx) =>
+      accumulator.forEach((accumulatorCount, accumulatorIdx) => {
+        const resultIdx = dieIdx + accumulatorIdx;
+        /* Any time the leader's dice pool scores 0 successes
+           the assist dice cannot add any any (accumulatorIdx==0 ? 0).
+           Instead these scenarios increase the number of ways to get
+           0 total successes resultIdx == 0 ? (20 * accumulatorCount).
+
+
+        */
+        const countIncrement = resultIdx == 0 ? (20 * accumulatorCount) : accumulatorIdx==0 ? 0 : dieCount * accumulatorCount;
+        nextArray[resultIdx] += countIncrement;
+      })
+    );
+    return nextArray;
+  }, leaderFrequencyTable);
+  return results;
+}
+
 const castArguments = ({
   numDice = 2,
   focus = false,
@@ -49,7 +73,7 @@ export function successesFrequencyTable({
   attribute,
   discipline,
   normalize = false,
-}) {
+}, assists = undefined) {
   ({ numDice, focus, attribute, discipline, normalize } = castArguments({
     numDice,
     focus,
@@ -58,15 +82,23 @@ export function successesFrequencyTable({
     normalize,
   }));
   const successDie = createSuccessDie({ attribute, discipline, focus });
-  const dicePool = Array(numDice).fill(successDie);
-  const res = calculateDicePoolFrequencyTable(...dicePool);
+  const leaderDicePool = Array(numDice).fill(successDie);
+  const leaderSuccesses = calculateDicePoolFrequencyTable(...leaderDicePool);
   
   // This only applies in the unusual circumstance where a character has an
   // applicable focus but 0 discipline, meaning they can't score two successes.
-  while (res.at(-1) == 0) {
-    res.pop();
+  while (leaderSuccesses.at(-1) == 0) {
+    leaderSuccesses.pop();
   }
-  return normalize ? normalizeArray(res) : res;
+  if(assists){
+    const assistSuccessDice = Array.prototype.map.call(assists, assist => createSuccessDie(assist));
+    const finalSuccesses = calculateAssistDicePoolFrequencyTable(leaderSuccesses, ...assistSuccessDice);
+    return normalize ? normalizeArray(finalSuccesses) : finalSuccesses;
+
+  }
+  else{
+    return normalize ? normalizeArray(leaderSuccesses) : leaderSuccesses;
+  }
 }
 
 export function complicationsFrequencyTable({
