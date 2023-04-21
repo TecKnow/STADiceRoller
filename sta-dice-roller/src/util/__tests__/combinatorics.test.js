@@ -51,6 +51,71 @@ describe("Test general dice pool function", () => {
   });
 });
 
+describe("Test dice pool with assists", () => {
+  test("The worst realistic case", () => {
+    const res = successesFrequencyTable(
+      {
+        numDice: 2,
+        focus: false,
+        discipline: 1,
+        attribute: 7,
+        normalize: false,
+      },
+      [{ attribute: 7, discipline: 1, focus: false }]
+    );
+    expect(res).toEqual([2880, 2016, 2052, 847, 183, 21, 1]);
+  });
+  test("Two perfect characters without momentum", () => {
+    const res = successesFrequencyTable(
+      {
+        numDice: 2,
+        focus: true,
+        discipline: 5,
+        attribute: 12,
+        normalize: false,
+      },
+      [{ attribute: 12, discipline: 5, focus: true }]
+    );
+    expect(res).toEqual([180, 216, 1386, 2808, 2385, 900, 125]);
+  });
+  test("Two perfect characters with 6 momentum", () => {
+    const res = successesFrequencyTable(
+      {
+        numDice: 5,
+        focus: true,
+        discipline: 5,
+        attribute: 12,
+        normalize: false,
+      },
+      [{ attribute: 12, discipline: 5, focus: true }]
+    );
+    expect(res).toEqual([
+      4860, 14580, 181035, 1078920, 3996135, 9630576, 15300684, 16050960,
+      11100375, 4995000, 1406250, 225000, 15625,
+    ]);
+  });
+  test("Great team, terrible boss", () => {
+    const res = successesFrequencyTable(
+      {
+        numDice: 2,
+        focus: true,
+        discipline: 1,
+        attribute: 7,
+        normalize: false,
+      },
+      [
+        { attribute: 12, discipline: 5, focus: true },
+        { attribute: 12, discipline: 5, focus: true },
+        { attribute: 12, discipline: 5, focus: true },
+      ]
+    );
+    expect(res).toEqual([
+      1152000, 4536, 56403, 264438, 580770, 626022, 366048, 122898, 24110, 2650,
+      125,
+    ]);
+  });
+});
+
 describe("Test STA dice pool calculator", () => {
   describe("Success base cases", () => {
     test("One die, no focus, frequency", () => {
