@@ -1,4 +1,6 @@
 import { Fragment } from "react";
+import Switch from '@mui/material/Switch'
+import FormControlLabel from '@mui/material/FormControlLabel';
 import FlexibleNumericInput from "./DeferredNumericInput";
 
 export default function InputArea({
@@ -46,15 +48,7 @@ export default function InputArea({
           setValue={setDiscipline}
         />
       </label>
-      <label>
-        Focus:{" "}
-        <input
-          name="focus"
-          type="checkbox"
-          checked={focus}
-          onChange={(e) => setFocus(e.target.checked)}
-        />
-      </label>
+      <FormControlLabel control={<Switch/>} label="Focus" checked={focus} onChange={(e) => setFocus(e.target.checked)}/>
       <label>
         Dice:{" "}
         <FlexibleNumericInput
@@ -76,15 +70,7 @@ export default function InputArea({
           setValue={setComplicationsRange}
         />
       </label>
-      <label>
-        normalize:{" "}
-        <input
-          name="normalize"
-          type="checkbox"
-          checked={normalize}
-          onChange={(e) => setNormalize(e.target.checked)}
-        />
-      </label>
+      <FormControlLabel control={<Switch checked={normalize} onChange={(e) => setNormalize(e.target.checked)}/>} label="normalize"/>
     </Fragment>
   );
 }
