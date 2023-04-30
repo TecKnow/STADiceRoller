@@ -30,56 +30,65 @@ export default function InputArea({
   return (
     <Fragment>
       <h3>Parameters</h3>
+      <label>
+        Attribute
       <Slider
         defaultValue={attributeMin}
         min={attributeMin}
         max={attributeMax}
         value={Number(attribute)}
         onChange={(event, newValue) => {
-          setAttribute(newValue);
+          setAttribute(Number(newValue));
         }}
         marks
         valueLabelDisplay="auto"
-      />
+      /></label>
+      <label>Discipline
       <Slider
-        defaultValue={disciplineMin}
-        min={disciplineMin}
-        max={disciplineMax}
+        defaultValue={Number(disciplineMin)}
+        min={Number(disciplineMin)}
+        max={Number(disciplineMax)}
         value={Number(discipline)}
         onChange={(event, newValue) => {
-          setDiscipline(newValue);
+          setDiscipline(Number(newValue));
         }}
         marks
         valueLabelDisplay="auto"
       />
+      </label>
       <FormControlLabel
         control={<Switch />}
         label="Focus"
         checked={focus}
         onChange={(e) => setFocus(e.target.checked)}
       />
+      <label>
+        Dice
       <Slider
-        defaultValue={Number(numDice)}
+        defaultValue={Number(2)}
         min={Number(numDiceMin)}
         max={Number(numDiceMax)}
         value={Number(numDice)}
         onChange={(event, newValue) => {
-          setNumDice(newValue);
+          setNumDice(Number(newValue));
         }}
         marks
         valueLabelDisplay="auto"
       />
+      </label>
+      <label>Complications Range
       <Slider
-        defaultValue={Number(complicationsRange)}
+        defaultValue={Number(complicationsRangeMin)}
         min={Number(complicationsRangeMin)}
         max={Number(complicationsRangeMax)}
         value={Number(complicationsRange)}
         onChange={(event, newValue) => {
-          setComplicationsRange(newValue);
+          setComplicationsRange(Number(newValue));
         }}
         marks
         valueLabelDisplay="auto"
       />
+      </label>
       <FormControlLabel
         control={
           <Switch
