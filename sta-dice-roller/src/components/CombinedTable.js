@@ -1,3 +1,4 @@
+import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
 import { successesFrequencyTable, successesCumulativeTable,
 complicationsFrequencyTable, complicationsCumulativeTable } from "@/util/combinatorics";
 
@@ -40,29 +41,30 @@ export default function CombinedTable({
     });
   
     const rows = Array.prototype.map.call(zipLists, ([exactSuccesses, cumulativeSuccesses, exactComplications, cumulativeComplications], idx) => (
-      <tr key={`${idx}_${exactSuccesses}_${exactComplications}`}>
-        <td>{idx}</td>
-        <td>{normalize? Number(exactSuccesses).toLocaleString(undefined, {style: 'percent', maximumFractionDigits: 5}): Number(exactSuccesses).toLocaleString()}</td>
-        <td>{ normalize ? Number(cumulativeSuccesses).toLocaleString(undefined, {style: 'percent', maximumFractionDigits: 5}) : Number(cumulativeSuccesses).toLocaleString(undefined)}</td>
-        <td>{normalize? Number(exactComplications).toLocaleString(undefined, {style: 'percent', maximumFractionDigits: 5}): Number(exactComplications).toLocaleString()}</td>
-        <td>{ normalize ? Number(cumulativeComplications).toLocaleString(undefined, {style: 'percent', maximumFractionDigits: 5}) : Number(cumulativeComplications).toLocaleString(undefined)}</td>
-      </tr>
+      <TableRow key={`${idx}_${exactSuccesses}_${exactComplications}`}>
+        <TableCell>{idx}</TableCell>
+        <TableCell>{normalize? Number(exactSuccesses).toLocaleString(undefined, {style: 'percent', maximumFractionDigits: 5}): Number(exactSuccesses).toLocaleString()}</TableCell>
+        <TableCell>{ normalize ? Number(cumulativeSuccesses).toLocaleString(undefined, {style: 'percent', maximumFractionDigits: 5}) : Number(cumulativeSuccesses).toLocaleString(undefined)}</TableCell>
+        <TableCell>{normalize? Number(exactComplications).toLocaleString(undefined, {style: 'percent', maximumFractionDigits: 5}): Number(exactComplications).toLocaleString()}</TableCell>
+        <TableCell>{ normalize ? Number(cumulativeComplications).toLocaleString(undefined, {style: 'percent', maximumFractionDigits: 5}) : Number(cumulativeComplications).toLocaleString(undefined)}</TableCell>
+      </TableRow>
     ));
     
     return (
-      <table>
+      <TableContainer>
+        <Table size="small">
         <caption>Frequency Table</caption>
-        <thead>
-          <tr>
-            <th scope="col">Count</th>
-            <th scope="col">Successes</th>
-            <th scope="col">&ge;Successes</th>
-            <th scope="col">Complications</th>
-            <th scope="col">&le;Complications</th>
-          </tr>
-        </thead>
-        <tbody>{rows}</tbody>
-      </table>
+        <TableHead>
+          <TableRow>
+            <TableCell>Count</TableCell>
+            <TableCell>Successes</TableCell>
+            <TableCell>&ge;&nbsp;Successes</TableCell>
+            <TableCell>Complications</TableCell>
+            <TableCell>&le;&nbsp;Complications</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>{rows}</TableBody>
+      </Table></TableContainer>
     );
   }
   
