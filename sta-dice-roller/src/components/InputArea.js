@@ -1,5 +1,11 @@
 import { Fragment } from "react";
-import FlexibleNumericInput from "./DeferredNumericInput";
+import {
+  Switch,
+  FormControlLabel,
+  Slider,
+  Grid,
+  Typography,
+} from "@mui/material";
 
 export default function InputArea({
   attribute,
@@ -21,70 +27,103 @@ export default function InputArea({
   complicationsRange,
   complicationsRangeMin,
   complicationsRangeMax,
-  setComplicationsRange
+  setComplicationsRange,
 }) {
   return (
     <Fragment>
-      <h3>Parameters</h3>
-      <label>
-        Attribute:{" "}
-        <FlexibleNumericInput
-          name="attribute"
-          min={attributeMin}
-          max={attributeMax}
-          value={attribute}
-          setValue={setAttribute}
-        />
-      </label>
-      <label>
-        Discipline:{" "}
-        <FlexibleNumericInput
-          name="discipline"
-          min={disciplineMin}
-          max={disciplineMax}
-          value={discipline}
-          setValue={setDiscipline}
-        />
-      </label>
-      <label>
-        Focus:{" "}
-        <input
-          name="focus"
-          type="checkbox"
-          checked={focus}
-          onChange={(e) => setFocus(e.target.checked)}
-        />
-      </label>
-      <label>
-        Dice:{" "}
-        <FlexibleNumericInput
-          name="dice"
-          type="number"
-          min={numDiceMin}
-          max={numDiceMax}
-          value={numDice}
-          setValue={setNumDice}
-        />
-      </label>
-      <label>
-        Complications Range:{" "}
-        <FlexibleNumericInput
-          name="complications-range"
-          min={complicationsRangeMin}
-          max={complicationsRangeMax}
-          value={complicationsRange}
-          setValue={setComplicationsRange}
-        />
-      </label>
-      <label>
-        normalize:{" "}
-        <input
-          name="normalize"
-          type="checkbox"
-          checked={normalize}
-          onChange={(e) => setNormalize(e.target.checked)}
-        />
-      </label>
+      <Typography variant="h3" gutterBottom>Parameters</Typography>
+      <Grid
+        container
+        spacing={{ xs: 2, md: 3 }}
+        columns={{ xs: 4, sm: 8, md: 12 }}
+      >
+        <Grid item xs={3}>
+          <Slider
+            defaultValue={attributeMin}
+            min={attributeMin}
+            max={attributeMax}
+            value={Number(attribute)}
+            onChange={(event, newValue) => {
+              setAttribute(Number(newValue));
+            }}
+            marks
+            valueLabelDisplay="on"
+            aria-labelledby="attribute-slider"
+          />
+        </Grid>
+        <Grid item xs={1}>
+          <Typography id="attribute-slider">Attribute</Typography>
+        </Grid>
+        <Grid item xs={3}>
+          <Slider
+            defaultValue={Number(disciplineMin)}
+            min={Number(disciplineMin)}
+            max={Number(disciplineMax)}
+            value={Number(discipline)}
+            onChange={(event, newValue) => {
+              setDiscipline(Number(newValue));
+            }}
+            marks
+            valueLabelDisplay="on"
+            aria-labelledby="discipline-slider"
+          />
+        </Grid>
+        <Grid item xs={1}>
+          <Typography id="discipline-slider">Discipline</Typography>
+        </Grid>
+        <Grid item xs={4} sm={8} md={4}>
+          <FormControlLabel
+            control={<Switch />}
+            label="Focus"
+            checked={focus}
+            onChange={(e) => setFocus(e.target.checked)}
+          />
+        </Grid>
+        <Grid item xs={3}>
+          <Slider
+            defaultValue={Number(2)}
+            min={Number(numDiceMin)}
+            max={Number(numDiceMax)}
+            value={Number(numDice)}
+            onChange={(event, newValue) => {
+              setNumDice(Number(newValue));
+            }}
+            marks
+            valueLabelDisplay="on"
+            aria-labelledby="num-dice-slider"
+          />
+        </Grid>
+        <Grid item xs={1}>
+          <Typography id="num-dice-slider">Dice</Typography>
+        </Grid>
+        <Grid item xs={3}>
+          <Slider
+            defaultValue={Number(complicationsRangeMin)}
+            min={Number(complicationsRangeMin)}
+            max={Number(complicationsRangeMax)}
+            value={Number(complicationsRange)}
+            onChange={(event, newValue) => {
+              setComplicationsRange(Number(newValue));
+            }}
+            marks
+            valueLabelDisplay="on"
+          />
+        </Grid>
+        <Grid item xs={1}>
+          <Typography id="complications-range-slider">Complications</Typography>
+        </Grid>
+        <Grid item xs={4} sm={8} md={4}>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={normalize}
+                onChange={(e) => setNormalize(e.target.checked)}
+              />
+            }
+            label="normalize"
+          />
+        </Grid>
+      </Grid>
     </Fragment>
   );
 }

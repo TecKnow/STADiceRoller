@@ -1,4 +1,5 @@
 import { Fragment, useEffect } from "react";
+import { Typography } from "@mui/material";
 import { LineChart } from "chartist";
 import "chartist/dist/index.css";
 
@@ -46,7 +47,7 @@ export default function CumulativeSuccessLineChart({
   ]);
   return (
     <Fragment>
-      <h3>Cumulative Probability</h3>
+      <Typography variant="h3" gutterBottom>Cumulative Probability</Typography>
       <div id="linechart" style={{height: "25vh"}}></div>
     </Fragment>
   );
