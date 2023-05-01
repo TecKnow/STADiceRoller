@@ -31,7 +31,7 @@ export default function InputArea({
 }) {
   return (
     <Fragment>
-      <h3>Parameters</h3>
+      <Typography variant="h3" gutterBottom>Parameters</Typography>
       <Grid
         container
         spacing={{ xs: 2, md: 3 }}

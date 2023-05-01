@@ -1,4 +1,5 @@
 import { Fragment, useEffect } from "react";
+import { Typography } from "@mui/material";
 import { BarChart } from "chartist";
 import "chartist/dist/index.css";
 
@@ -38,7 +39,7 @@ export default function ExactSuccessBarChart({
   }, [attribute, discipline, focus, numDice, normalize, complicationsRange]);
   return (
     <Fragment>
-      <h3>Exact Successes</h3>
+      <Typography variant="h3" gutterBottom>Exact Successes</Typography>
       <div id="barchart" style={{height: "25vh"}}></div>
     </Fragment>
   );
