@@ -3,9 +3,9 @@ import {
   Switch,
   FormControlLabel,
   Slider,
-  Grid,
+  Unstable_Grid2 as Grid,
   Typography,
-  IconButton
+  IconButton,
 } from "@mui/material";
 
 import { AddCircle, RemoveCircle } from "@mui/icons-material";
@@ -70,7 +70,77 @@ export function RollInputBar({
   );
 }
 
-export function AssistantArea(){};
+export function AssistantArea({
+  attribute,
+  setAttribute,
+  discipline,
+  setDiscipline,
+  focus,
+  setFocus,
+  attributeMin,
+  attributeMax,
+  disciplineMin,
+  disciplineMax,
+  assistList,
+  setAssistList,
+}) {
+  return (
+    <Fragment>
+      <Grid item xs={1}>
+        <Typography variant="h4" gutterBottom>
+          Assistants
+        </Typography>
+      </Grid>
+      <Grid item xs={1}>
+        <IconButton aria-label="add assistant">
+          <AddCircle />
+        </IconButton>
+      </Grid>
+      <Grid item xs={1}>
+        <IconButton
+          disabled={assistList.length == 0}
+          aria-label="remove assistant"
+        >
+          <RemoveCircle />
+        </IconButton>
+      </Grid>
+      <Grid item xs={1} sm={5} md={9}></Grid>
+      <AssistRollRows
+          attribute={attribute}
+          setAttribute={setAttribute}
+          discipline={discipline}
+          setDiscipline={setDiscipline}
+          focus={focus}
+          setFocus={setFocus}
+          attributeMin={attributeMin}
+          attributeMax={attributeMax}
+          disciplineMin={disciplineMin}
+          disciplineMax={disciplineMax}
+          assistList={assistList}
+          setAssistList={setAssistList}      
+      />
+    </Fragment>
+  );
+}
+
+export function AssistRollRows({
+  attribute,
+  setAttribute,
+  discipline,
+  setDiscipline,
+  focus,
+  setFocus,
+  attributeMin,
+  attributeMax,
+  disciplineMin,
+  disciplineMax,
+  assistList,
+  setAssistList,
+}) {
+  if(assistList.length == 0){
+    return (<Grid item xs={4} sm={8} md={12}></Grid>)
+  }
+}
 
 export default function InputArea({
   attribute,
@@ -93,6 +163,8 @@ export default function InputArea({
   complicationsRangeMin,
   complicationsRangeMax,
   setComplicationsRange,
+  assistList,
+  setAssistList,
 }) {
   return (
     <Fragment>
@@ -167,16 +239,20 @@ export default function InputArea({
           disciplineMin={disciplineMin}
           disciplineMax={disciplineMax}
         />
-
-        {/* xs={2} sm={6} md={10} */}
-        <Grid item xs="auto">
-          <Typography variant="h4" gutterBottom>
-            Assistants
-          </Typography>
-
-        </Grid>
-        <Grid item xs="auto"><IconButton><AddCircle/></IconButton></Grid>
-        <Grid item xs="auto"><IconButton disabled={true}><RemoveCircle/></IconButton></Grid>
+        <AssistantArea
+          attribute={attribute}
+          setAttribute={setAttribute}
+          discipline={discipline}
+          setDiscipline={setDiscipline}
+          focus={focus}
+          setFocus={setFocus}
+          attributeMin={attributeMin}
+          attributeMax={attributeMax}
+          disciplineMin={disciplineMin}
+          disciplineMax={disciplineMax}
+          assistList={assistList}
+          setAssistList={setAssistList}
+        />
       </Grid>
     </Fragment>
   );

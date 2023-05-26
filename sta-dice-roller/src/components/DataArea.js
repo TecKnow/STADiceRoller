@@ -11,6 +11,7 @@ export default function DataArea() {
   const [numDice, setNumDice] = useState("2");
   const [normalize, setNormalize] = useState(true);
   const [complicationsRange, setComplicationsRange] = useState(1);
+  const [assistList, setAssistList] = useState([]);
 
   return (
     <Fragment>
@@ -35,6 +36,8 @@ export default function DataArea() {
         setComplicationsRange={setComplicationsRange}
         complicationsRangeMin={1}
         complicationsRangeMax={5}
+        assistList={assistList}
+        setAssistList={setAssistList}
       />
       <ExactSuccessBarChart
         attribute={attribute}
