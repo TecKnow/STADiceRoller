@@ -129,14 +129,17 @@ export function complicationsFrequencyTable({
   return normalize ? normalizeArray(res) : res;
 }
 
-export function successesCumulativeTable({
-  numDice = 2,
-  focus = false,
-  attribute,
-  discipline,
-  normalize = false,
-  atLeast = true,
-}) {
+export function successesCumulativeTable(
+  {
+    numDice = 2,
+    focus = false,
+    attribute,
+    discipline,
+    normalize = false,
+    atLeast = true,
+  },
+  assists = undefined
+) {
   ({ numDice, focus, attribute, discipline, normalize, atLeast } =
     castArguments({
       numDice,
@@ -146,13 +149,16 @@ export function successesCumulativeTable({
       normalize,
       atLeast,
     }));
-  const exact = successesFrequencyTable({
-    numDice,
-    focus,
-    attribute,
-    discipline,
-    normalize,
-  });
+  const exact = successesFrequencyTable(
+    {
+      numDice,
+      focus,
+      attribute,
+      discipline,
+      normalize,
+    },
+    assists
+  );
   const proportion = cumulativeSumArray(exact, atLeast);
   return proportion;
 }
