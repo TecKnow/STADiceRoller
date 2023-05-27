@@ -46,6 +46,7 @@ export default function DataArea() {
         numDice={numDice}
         complicationsRange={complicationsRange}
         normalize={normalize}
+        assistList={assistList}
       />
       <CumulativeSuccessLineChart
         attribute={attribute}
@@ -54,14 +55,17 @@ export default function DataArea() {
         numDice={numDice}
         complicationsRange={complicationsRange}
         normalize={normalize}
+        assistList={assistList}
       />
       <CombinedTable
-              attribute={attribute}
-              discipline={discipline}
-              focus={focus}
-              numDice={numDice}
-              complicationsRange={complicationsRange}
-              normalize={normalize}/>
+        attribute={attribute}
+        discipline={discipline}
+        focus={focus}
+        numDice={numDice}
+        complicationsRange={complicationsRange}
+        normalize={normalize}
+        assistList={assistList}
+      />
     </Fragment>
   );
 }

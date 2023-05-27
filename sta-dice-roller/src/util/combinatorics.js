@@ -15,8 +15,13 @@ export function calculateDicePoolFrequencyTable(...dice) {
   return results;
 }
 
-export function calculateAssistDicePoolFrequencyTable(leaderFrequencyTable, ...assistDice){
-  const dice = Array.prototype.map.call(Array.from(assistDice), (die) => Array.from(die));
+export function calculateAssistDicePoolFrequencyTable(
+  leaderFrequencyTable,
+  ...assistDice
+) {
+  const dice = Array.prototype.map.call(Array.from(assistDice), (die) =>
+    Array.from(die)
+  );
   const results = dice.reduce((accumulator, die) => {
     const nextArrayLength = accumulator.length - 1 + (die.length - 1) + 1;
     const nextArray = Array(nextArrayLength).fill(0);
@@ -30,7 +35,12 @@ export function calculateAssistDicePoolFrequencyTable(leaderFrequencyTable, ...a
 
 
         */
-        const countIncrement = resultIdx == 0 ? (20 * accumulatorCount) : accumulatorIdx==0 ? 0 : dieCount * accumulatorCount;
+        const countIncrement =
+          resultIdx == 0
+            ? 20 * accumulatorCount
+            : accumulatorIdx == 0
+            ? 0
+            : dieCount * accumulatorCount;
         nextArray[resultIdx] += countIncrement;
       })
     );
@@ -67,13 +77,10 @@ function createSuccessDie({ attribute, discipline, focus = false }) {
   return [zeroSuccesses, oneSuccess, twoSuccesses];
 }
 
-export function successesFrequencyTable({
-  numDice = 2,
-  focus = false,
-  attribute,
-  discipline,
-  normalize = false,
-}, assists = undefined) {
+export function successesFrequencyTable(
+  { numDice = 2, focus = false, attribute, discipline, normalize = false },
+  assists = undefined
+) {
   ({ numDice, focus, attribute, discipline, normalize } = castArguments({
     numDice,
     focus,
@@ -84,19 +91,24 @@ export function successesFrequencyTable({
   const successDie = createSuccessDie({ attribute, discipline, focus });
   const leaderDicePool = Array(numDice).fill(successDie);
   const leaderSuccesses = calculateDicePoolFrequencyTable(...leaderDicePool);
-  
+
   // This only applies in the unusual circumstance where a character has an
   // applicable focus but 0 discipline, meaning they can't score two successes.
   while (leaderSuccesses.at(-1) == 0) {
     leaderSuccesses.pop();
   }
-  if(assists){
-    const assistSuccessDice = Array.prototype.map.call(assists, assist => createSuccessDie(assist));
-    const finalSuccesses = calculateAssistDicePoolFrequencyTable(leaderSuccesses, ...assistSuccessDice);
+  if (assists) {
+    const assistSuccessDice = Array.prototype.map.call(
+      assists,
+      ([attribute, discipline, focus]) =>
+        createSuccessDie({ attribute, discipline, focus })
+    );
+    const finalSuccesses = calculateAssistDicePoolFrequencyTable(
+      leaderSuccesses,
+      ...assistSuccessDice
+    );
     return normalize ? normalizeArray(finalSuccesses) : finalSuccesses;
-
-  }
-  else{
+  } else {
     return normalize ? normalizeArray(leaderSuccesses) : leaderSuccesses;
   }
 }
@@ -117,14 +129,14 @@ export function complicationsFrequencyTable({
   return normalize ? normalizeArray(res) : res;
 }
 
-export function successesCumulativeTable(
-  {numDice = 2,
+export function successesCumulativeTable({
+  numDice = 2,
   focus = false,
   attribute,
   discipline,
   normalize = false,
-  atLeast = true}
-) {
+  atLeast = true,
+}) {
   ({ numDice, focus, attribute, discipline, normalize, atLeast } =
     castArguments({
       numDice,
@@ -149,15 +161,19 @@ export function complicationsCumulativeTable({
   numDice = 2,
   complicationsRange = 1,
   atLeast = false,
-  normalize= false
+  normalize = false,
 }) {
   [numDice, complicationsRange, atLeast, normalize] = [
     Number(numDice),
     Number(complicationsRange),
     Boolean(atLeast),
-    Boolean(normalize)
+    Boolean(normalize),
   ];
-  const exact = complicationsFrequencyTable({numDice, complicationsRange, normalize});
+  const exact = complicationsFrequencyTable({
+    numDice,
+    complicationsRange,
+    normalize,
+  });
   const cumulative = cumulativeSumArray(exact, atLeast);
   return cumulative;
 }

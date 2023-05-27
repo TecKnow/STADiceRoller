@@ -3,7 +3,10 @@ import { Typography } from "@mui/material";
 import { BarChart } from "chartist";
 import "chartist/dist/index.css";
 
-import { successesFrequencyTable, complicationsFrequencyTable } from "@/util/combinatorics";
+import {
+  successesFrequencyTable,
+  complicationsFrequencyTable,
+} from "@/util/combinatorics";
 
 export default function ExactSuccessBarChart({
   attribute,
@@ -12,35 +15,53 @@ export default function ExactSuccessBarChart({
   numDice = 2,
   normalize = true,
   complicationsRange = 1,
+  assistList,
 }) {
   useEffect(() => {
-    const exactSuccesses = successesFrequencyTable({
-      attribute: Number(attribute),
-      discipline: Number(discipline),
-      focus: Boolean(focus),
-      numDice: Number(numDice),
-      normalize: Boolean(normalize),
-    });
+    const exactSuccesses = successesFrequencyTable(
+      {
+        attribute: Number(attribute),
+        discipline: Number(discipline),
+        focus: Boolean(focus),
+        numDice: Number(numDice),
+        normalize: Boolean(normalize),
+      },
+      assistList
+    );
 
     const exactComplications = complicationsFrequencyTable({
-      numDice: Number(numDice), 
+      numDice: Number(numDice) + assistList.length,
       complicationsRange: Number(complicationsRange),
-      normalize: Boolean(normalize)})
+      normalize: Boolean(normalize),
+    });
     new BarChart(
       "#barchart",
       {
         labels: Array.from(exactSuccesses.keys()),
-        series: [Array.from(exactSuccesses.values()), Array.from(exactComplications.values()).map((element)=>1*element)],
+        series: [
+          Array.from(exactSuccesses.values()),
+          Array.from(exactComplications.values()).map((element) => 1 * element),
+        ],
       },
       {
         distributeSeries: undefined,
       }
     );
-  }, [attribute, discipline, focus, numDice, normalize, complicationsRange]);
+  }, [
+    attribute,
+    discipline,
+    focus,
+    numDice,
+    normalize,
+    complicationsRange,
+    assistList,
+  ]);
   return (
     <Fragment>
-      <Typography variant="h3" gutterBottom>Exact Successes</Typography>
-      <div id="barchart" style={{height: "25vh"}}></div>
+      <Typography variant="h3" gutterBottom>
+        Exact Successes
+      </Typography>
+      <div id="barchart" style={{ height: "25vh" }}></div>
     </Fragment>
   );
 }
