@@ -1,58 +1,126 @@
-import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
-import { successesFrequencyTable, successesCumulativeTable,
-complicationsFrequencyTable, complicationsCumulativeTable } from "@/util/combinatorics";
+import {
+  complicationsCumulativeTable,
+  complicationsFrequencyTable,
+  successesCumulativeTable,
+  successesFrequencyTable,
+} from "@/util/combinatorics";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 
 export default function CombinedTable({
-    attribute,
-    discipline,
-    focus = false,
-    numDice = 2,
-    complicationsRange,
-    normalize = true,
-  }) {
-  
-    const exactSuccessList = successesFrequencyTable({
+  attribute,
+  discipline,
+  focus = false,
+  numDice = 2,
+  complicationsRange,
+  normalize = true,
+  assistList,
+}) {
+  const exactSuccessList = successesFrequencyTable(
+    {
       attribute,
       discipline,
       focus,
       numDice,
       normalize,
-    });
-  
-    const exactComplicationsList = complicationsFrequencyTable({
-      numDice,
-      complicationsRange,
-      normalize,
-    });
+    },
+    assistList
+  );
 
-    const cumulativeSuccessList = successesCumulativeTable({ attribute, discipline, focus, numDice, normalize});
-  
-    const cumulativeComplicationsList = complicationsCumulativeTable({
-      numDice,
-      complicationsRange,
-      normalize,
-    });
-  
-    const zipLists = Array.prototype.map.call(exactSuccessList, (exactSuccesses, idx)=>{
-      const exactComplications = idx < exactComplicationsList.length ? exactComplicationsList[idx] : 0;
-      const cumulativeSuccesses = cumulativeSuccessList[idx]
-      const cumulativeComplications = idx < cumulativeComplicationsList.length ? cumulativeComplicationsList[idx] : cumulativeComplicationsList[cumulativeComplicationsList.length-1]
-      return [exactSuccesses, cumulativeSuccesses, exactComplications, cumulativeComplications]
-    });
-  
-    const rows = Array.prototype.map.call(zipLists, ([exactSuccesses, cumulativeSuccesses, exactComplications, cumulativeComplications], idx) => (
+  const exactComplicationsList = complicationsFrequencyTable({
+    numDice: numDice + assistList.length,
+    complicationsRange,
+    normalize,
+  });
+
+  const cumulativeSuccessList = successesCumulativeTable(
+    { attribute, discipline, focus, numDice, normalize },
+    assistList
+  );
+
+  const cumulativeComplicationsList = complicationsCumulativeTable({
+    numDice: numDice + assistList.length,
+    complicationsRange,
+    normalize,
+  });
+
+  const zipLists = Array.prototype.map.call(
+    exactSuccessList,
+    (exactSuccesses, idx) => {
+      const exactComplications =
+        idx < exactComplicationsList.length ? exactComplicationsList[idx] : 0;
+      const cumulativeSuccesses = cumulativeSuccessList[idx];
+      const cumulativeComplications =
+        idx < cumulativeComplicationsList.length
+          ? cumulativeComplicationsList[idx]
+          : cumulativeComplicationsList[cumulativeComplicationsList.length - 1];
+      return [
+        exactSuccesses,
+        cumulativeSuccesses,
+        exactComplications,
+        cumulativeComplications,
+      ];
+    }
+  );
+
+  const rows = Array.prototype.map.call(
+    zipLists,
+    (
+      [
+        exactSuccesses,
+        cumulativeSuccesses,
+        exactComplications,
+        cumulativeComplications,
+      ],
+      idx
+    ) => (
       <TableRow key={`${idx}_${exactSuccesses}_${exactComplications}`}>
         <TableCell>{idx}</TableCell>
-        <TableCell>{normalize? Number(exactSuccesses).toLocaleString(undefined, {style: 'percent', maximumFractionDigits: 5}): Number(exactSuccesses).toLocaleString()}</TableCell>
-        <TableCell>{ normalize ? Number(cumulativeSuccesses).toLocaleString(undefined, {style: 'percent', maximumFractionDigits: 5}) : Number(cumulativeSuccesses).toLocaleString(undefined)}</TableCell>
-        <TableCell>{normalize? Number(exactComplications).toLocaleString(undefined, {style: 'percent', maximumFractionDigits: 5}): Number(exactComplications).toLocaleString()}</TableCell>
-        <TableCell>{ normalize ? Number(cumulativeComplications).toLocaleString(undefined, {style: 'percent', maximumFractionDigits: 5}) : Number(cumulativeComplications).toLocaleString(undefined)}</TableCell>
+        <TableCell>
+          {normalize
+            ? Number(exactSuccesses).toLocaleString(undefined, {
+                style: "percent",
+                maximumFractionDigits: 5,
+              })
+            : Number(exactSuccesses).toLocaleString()}
+        </TableCell>
+        <TableCell>
+          {normalize
+            ? Number(cumulativeSuccesses).toLocaleString(undefined, {
+                style: "percent",
+                maximumFractionDigits: 5,
+              })
+            : Number(cumulativeSuccesses).toLocaleString(undefined)}
+        </TableCell>
+        <TableCell>
+          {normalize
+            ? Number(exactComplications).toLocaleString(undefined, {
+                style: "percent",
+                maximumFractionDigits: 5,
+              })
+            : Number(exactComplications).toLocaleString()}
+        </TableCell>
+        <TableCell>
+          {normalize
+            ? Number(cumulativeComplications).toLocaleString(undefined, {
+                style: "percent",
+                maximumFractionDigits: 5,
+              })
+            : Number(cumulativeComplications).toLocaleString(undefined)}
+        </TableCell>
       </TableRow>
-    ));
-    
-    return (
-      <TableContainer>
-        <Table size="small">
+    )
+  );
+
+  return (
+    <TableContainer>
+      <Table size="small">
         <caption>Frequency Table</caption>
         <TableHead>
           <TableRow>
@@ -64,7 +132,7 @@ export default function CombinedTable({
           </TableRow>
         </TableHead>
         <TableBody>{rows}</TableBody>
-      </Table></TableContainer>
-    );
-  }
-  
+      </Table>
+    </TableContainer>
+  );
+}
