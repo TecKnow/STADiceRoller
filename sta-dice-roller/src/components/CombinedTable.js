@@ -34,7 +34,7 @@ export default function CombinedTable({
   );
 
   const exactComplicationsList = complicationsFrequencyTable({
-    numDice: numDice + assistList.length,
+    numDice: Number(numDice) + Number(assistList.length),
     complicationsRange,
     normalize,
   });
@@ -45,7 +45,7 @@ export default function CombinedTable({
   );
 
   const cumulativeComplicationsList = complicationsCumulativeTable({
-    numDice: numDice + assistList.length,
+    numDice: Number(numDice) + Number(assistList.length),
     complicationsRange,
     normalize,
   });
